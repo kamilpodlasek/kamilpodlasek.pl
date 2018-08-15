@@ -1,0 +1,16 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true
+    },
+    "extends": ["eslint:recommended", "esnext"],
+    "rules": {
+        "no-invalid-this": "off",
+        "import/prefer-default-export": "off",
+        "eqeqeq": "off",
+        "import/named": "off",
+        "import/no-namespace": "off",
+        "operator-assignment": "off",
+        "array-callback-return": "off"
+    }
+}

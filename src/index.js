@@ -1,3 +1,3 @@
-console.info("works!");
+console.info('works!');
 
-import style from "./style.css";
+import style from './style.css';
