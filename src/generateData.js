@@ -117,9 +117,9 @@ const charsLinesGenerator = {
 };
 
 const generators = {
-    chars: charsGenerator,
-    charsLines: charsLinesGenerator,
+    flashing: charsGenerator,
+    scatteredLines: charsLinesGenerator,
 };
 
-export const generateData = (word, dimensions, type) =>
-    Array.from(word.toUpperCase()).map(char => generators[type][char](dimensions));
+export const generateData = ({ type, text, charHeight, charWidth }) =>
+    Array.from(text.toUpperCase()).map(char => generators[type][char]({ h: charHeight, w: charWidth }));

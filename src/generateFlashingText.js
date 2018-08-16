@@ -1,21 +1,11 @@
 import * as d3 from 'd3';
 
-import { generateData } from './generateData';
-
 const line = d3.line().curve(d3.curveCardinal.tension(0.9));
 
-export function generateWord({
-    word,
-    container,
-    marginX,
-    marginY,
-    charHeight,
-    charWidth,
-    strokeWidth,
-    letterSpacing,
-}) {
-    const data = generateData(word, { h: charHeight, w: charWidth }, 'chars');
-
+export function generateFlashingText(
+    { container, marginX, marginY, charWidth, strokeWidth, letterSpacing },
+    data,
+) {
     container
         .append('g')
         .selectAll('path')

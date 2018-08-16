@@ -1,26 +1,16 @@
-import { generateData } from './generateData';
+export function generateScatteredLinesText(
+    { text, container, marginX, marginY, charHeight, charWidth, strokeWidth, letterSpacing },
+    targetData,
+) {
+    const textLength = text.length;
 
-export function generateLinesWord({
-    word,
-    container,
-    marginX,
-    marginY,
-    charHeight,
-    charWidth,
-    strokeWidth,
-    letterSpacing,
-}) {
-    const wordLength = word.length;
-
-    const data = generateData(word, { h: charHeight, w: charWidth }, 'charsLines').map((letter, i) =>
+    const data = targetData.map((letter, i) =>
         letter.map(targetLine => {
-            const [[pointAx, pointAy], [pointBx, pointBy]] = targetLine;
-
-            const length = Math.sqrt(Math.pow(pointBx - pointAx, 2) + Math.pow(pointBy - pointAy, 2));
+            const length = getLineLength(targetLine);
 
             const angle = (rand(0, 180) * Math.PI) / 180;
 
-            const maxNewPointX = (wordLength / 2 - i - 1) * charWidth;
+            const maxNewPointX = (textLength / 2 - i - 1) * charWidth;
 
             const newPointA = [rand(0, maxNewPointX), rand(0, charHeight)];
 
@@ -72,6 +62,10 @@ function handleMouseOver(lines) {
             .transition()
             .duration(1500),
     );
+}
+
+function getLineLength([[pointAx, pointAy], [pointBx, pointBy]]) {
+    return Math.sqrt(Math.pow(pointBx - pointAx, 2) + Math.pow(pointBy - pointAy, 2));
 }
 
 function rand(min, max) {

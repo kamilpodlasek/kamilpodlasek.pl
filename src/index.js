@@ -1,12 +1,12 @@
 import { generateContainer } from './generateContainer';
-import { generateWord } from './generateWord';
-import { generateLinesWord } from './generateLinesWord';
+import { generateText } from './generateText';
 import style from './style.css';
 
 const container = generateContainer(document.querySelector('body'));
 
-generateWord({
-    word: 'kamil',
+generateText({
+    text: 'kamil',
+    type: 'flashing',
     container,
     marginX: 30,
     marginY: 30,
@@ -16,8 +16,9 @@ generateWord({
     letterSpacing: 14,
 });
 
-generateWord({
-    word: 'podlasek',
+generateText({
+    text: 'podlasek',
+    type: 'flashing',
     container,
     marginX: 30,
     marginY: 131,
@@ -27,8 +28,9 @@ generateWord({
     letterSpacing: 14,
 });
 
-generateWord({
-    word: 'javascript developer',
+generateText({
+    text: 'javascript developer',
+    type: 'flashing',
     container,
     marginX: 30,
     marginY: 261,
@@ -38,8 +40,9 @@ generateWord({
     letterSpacing: 10,
 });
 
-generateLinesWord({
-    word: 'abcdefghijklmnopqrstuvwxyz .,-?!',
+generateText({
+    text: 'abcdefghijklmnopqrstuvwxyz .,-?!',
+    type: 'scatteredLines',
     container,
     marginX: 30,
     marginY: 400,
