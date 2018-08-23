@@ -1,5 +1,5 @@
 export function generateScatteredLinesText(
-    { text, container, marginX, marginY, charHeight, charWidth, strokeWidth, letterSpacing },
+    { text, container, marginLeft, marginTop, charHeight, charWidth, strokeWidth, letterSpacing },
     targetData,
 ) {
     const textLength = text.length;
@@ -35,7 +35,7 @@ export function generateScatteredLinesText(
         .append('g')
         .attr(
             'transform',
-            (_d, i) => `translate(${letterSpacing * i + marginX + i * charWidth}, ${marginY})`,
+            (_d, i) => `translate(${letterSpacing * i + marginLeft + i * charWidth}, ${marginTop})`,
         )
         .selectAll('line')
         .data(d => d.map(({ initial }) => initial))

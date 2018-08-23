@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 const line = d3.line().curve(d3.curveCardinal.tension(0.9));
 
 export function generateFlashingText(
-    { container, marginX, marginY, charWidth, strokeWidth, letterSpacing },
+    { container, marginLeft, marginTop, charWidth, strokeWidth, letterSpacing },
     data,
 ) {
     container
@@ -14,7 +14,7 @@ export function generateFlashingText(
         .append('path')
         .style('stroke-width', strokeWidth)
         .attr('d', line)
-        .attr('transform', (_d, i) => `translate(${marginX + i * charWidth}, ${marginY})`)
+        .attr('transform', (_d, i) => `translate(${marginLeft + i * charWidth}, ${marginTop})`)
         .style('stroke', 'white')
         .each(function(d) {
             d.totalLength = this.getTotalLength();
@@ -36,6 +36,6 @@ export function generateFlashingText(
         .duration(500)
         .attr(
             'transform',
-            (_d, i) => `translate(${letterSpacing * i + marginX + i * charWidth}, ${marginY})`,
+            (_d, i) => `translate(${letterSpacing * i + marginLeft + i * charWidth}, ${marginTop})`,
         );
 }

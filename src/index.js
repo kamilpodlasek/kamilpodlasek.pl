@@ -1,53 +1,77 @@
+import style from './style.css';
 import { generateContainer } from './generateContainer';
 import { generateText } from './generateText';
-import style from './style.css';
 
-const container = generateContainer(document.querySelector('body'));
+const body = document.querySelector('body');
 
-generateText({
-    text: 'kamil',
-    type: 'flashing',
-    container,
-    marginX: 30,
-    marginY: 30,
-    charHeight: 100,
-    charWidth: 50,
-    strokeWidth: 4,
-    letterSpacing: 14,
-});
+const types = ['flashing', 'scatteredLines'];
 
-generateText({
-    text: 'podlasek',
-    type: 'flashing',
-    container,
-    marginX: 30,
-    marginY: 131,
-    charHeight: 100,
-    charWidth: 50,
-    strokeWidth: 4,
-    letterSpacing: 14,
-});
+const type = types[Math.round(Math.random())];
 
-generateText({
-    text: 'javascript developer',
-    type: 'flashing',
-    container,
-    marginX: 30,
-    marginY: 261,
-    charHeight: 50,
-    charWidth: 25,
-    strokeWidth: 2,
-    letterSpacing: 10,
-});
+const texts = [
+    { text: 'Kamil', size: 'big', type },
+    { text: 'Podlasek', size: 'big', type, marginBottom: 20 },
+    { text: 'JavaScript Developer', type, size: 'medium' },
+];
 
-generateText({
-    text: 'abcdefghijklmnopqrstuvwxyz .,-?!',
-    type: 'scatteredLines',
-    container,
-    marginX: 30,
-    marginY: 400,
-    charHeight: 30,
-    charWidth: 12,
-    strokeWidth: 1,
-    letterSpacing: 6,
-});
+const letterSpacings = {
+    big: 14,
+    medium: 10,
+};
+
+const maxCharWidth = {
+    big: 30,
+    medium: 15,
+};
+
+const minStrokeWidths = {
+    big: 2,
+    medium: 1,
+};
+
+const marginLeft = 10;
+const marginTop = 10;
+
+initiatePage();
+
+window.addEventListener('resize', initiatePage);
+
+function initiatePage() {
+    const { width, container } = generateContainer(body);
+
+    const dimensions = {
+        big: calculateDimensions('big', 70, width),
+        medium: calculateDimensions('medium', 95, width),
+    };
+
+    texts.reduce(
+        (accMargin, { size, marginBottom = 0, ...params }) =>
+            generateText({
+                ...params,
+                container,
+                marginLeft,
+                marginTop: accMargin,
+                marginBottom,
+                ...dimensions[size],
+            }),
+        marginTop,
+    );
+}
+
+function calculateDimensions(size, textWidth, containerWidth) {
+    const charsHorizontal = Math.max(
+        ...texts.filter(({ size: currentSize }) => currentSize === size).map(({ text }) => text.length),
+    );
+
+    const availableWidth =
+        (containerWidth / 100) * textWidth - 2 * marginLeft - letterSpacings[size] * charsHorizontal;
+
+    const charWidth = Math.min(maxCharWidth[size], availableWidth / charsHorizontal);
+
+    return {
+        charWidth,
+        charHeight: charWidth * 3,
+        strokeWidth: Math.max(charWidth / 14, minStrokeWidths[size]),
+        letterSpacing: letterSpacings[size],
+    };
+}

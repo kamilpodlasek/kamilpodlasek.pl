@@ -17,4 +17,6 @@ export function generateText(config) {
     const data = generateData(config);
 
     generators[config.type](config, data);
+
+    return config.marginTop + config.charHeight + config.marginBottom;
 }
