@@ -6,27 +6,46 @@ const body = document.querySelector('body');
 
 const types = ['flashing', 'scatteredLines'];
 
-const type = types[Math.round(Math.random())];
+const type = types[1];
 
 const texts = [
     { text: 'Kamil', size: 'big', type },
     { text: 'Podlasek', size: 'big', type, marginBottom: 20 },
-    { text: 'JavaScript Developer', type, size: 'medium' },
+    { text: 'Software Engineer', type, size: 'medium', marginBottom: 50 },
+    {
+        text: 'LinkedIn',
+        type,
+        size: 'small',
+        marginBottom: 16,
+        url: 'https://linkedin.com/in/kamil-podlasek',
+    },
+    { text: 'GitHub', type, size: 'small', marginBottom: 16, url: 'https://github.com/kamilpodlasek' },
+    {
+        text: 'Resume',
+        type,
+        size: 'small',
+        marginBottom: 16,
+        url:
+            'https://docs.google.com/document/d/1dyIF2xt77KIOdpDS3xRoB7kd7qWFVCRJpw_imPIPBis/edit?usp=sharing',
+    },
 ];
 
 const letterSpacings = {
     big: 14,
     medium: 10,
+    small: 8,
 };
 
 const maxCharWidth = {
     big: 30,
     medium: 15,
+    small: 10,
 };
 
 const minStrokeWidths = {
     big: 2,
     medium: 1,
+    small: 1,
 };
 
 const marginLeft = 10;
@@ -34,18 +53,17 @@ const marginTop = 10;
 
 initiatePage();
 
-window.addEventListener('resize', initiatePage);
-
 function initiatePage() {
     const { width, container } = generateContainer(body);
 
     const dimensions = {
         big: calculateDimensions('big', 70, width),
         medium: calculateDimensions('medium', 95, width),
+        small: calculateDimensions('small', 120, width),
     };
 
     texts.reduce(
-        (accMargin, { size, marginBottom = 0, ...params }) =>
+        (accMargin, { size, marginBottom = 0, ...params }, index) =>
             generateText({
                 ...params,
                 container,
@@ -53,6 +71,7 @@ function initiatePage() {
                 marginTop: accMargin,
                 marginBottom,
                 ...dimensions[size],
+                index,
             }),
         marginTop,
     );

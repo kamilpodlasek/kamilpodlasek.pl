@@ -12,7 +12,7 @@ export function generateContainer(parent) {
         height,
         container: parentEl
             .append('svg')
-            .attr('width', width)
-            .attr('height', height),
+            .attr('width', width - 20) // -paddings
+            .attr('height', height - 20), // -paddings
     };
 }

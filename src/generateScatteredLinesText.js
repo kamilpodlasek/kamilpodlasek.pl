@@ -1,5 +1,16 @@
 export function generateScatteredLinesText(
-    { text, container, marginLeft, marginTop, charHeight, charWidth, strokeWidth, letterSpacing },
+    {
+        text,
+        container,
+        marginLeft,
+        marginTop,
+        charHeight,
+        charWidth,
+        strokeWidth,
+        letterSpacing,
+        index,
+        url,
+    },
     targetData,
 ) {
     const textLength = text.length;
@@ -26,9 +37,68 @@ export function generateScatteredLinesText(
         }),
     );
 
-    const lines = container
+    const delay = Math.sqrt(index) * 500;
+    const duration = 1500;
+    let transitionFinished = false;
+
+    setTimeout(() => {
+        transitionFinished = true;
+
+        if (url) {
+            container
+                .append('rect')
+                .on('click', onClick)
+                .on('mouseover', onMouseOver)
+                .on('mouseout', onMouseOut)
+                .attr(
+                    'transform',
+                    (_d, i) =>
+                        `translate(${letterSpacing * i + marginLeft + i * charWidth}, ${marginTop +
+                            charHeight +
+                            5})`,
+                )
+                .attr('width', 0)
+                .attr('height', 1)
+                .attr('fill', 'white')
+                .transition()
+                .duration(200)
+                .attr('width', charWidth * textLength + letterSpacing * (textLength - 1));
+        }
+    }, delay + duration);
+
+    const onClick = () => {
+        if (!url || !transitionFinished) return;
+        window.open(url, '_newtab' + Date.now());
+        bg.attr('fill', 'transparent').style('cursor', 'default');
+    };
+
+    const onMouseOver = () => {
+        if (!url || !transitionFinished) return;
+        bg.attr('fill', 'red').style('cursor', 'pointer');
+    };
+
+    const onMouseOut = () => {
+        if (!url || !transitionFinished) return;
+        bg.attr('fill', 'transparent').style('cursor', 'default');
+    };
+
+    const bg = container
+        .append('rect')
+        .attr(
+            'transform',
+            (_d, i) => `translate(${letterSpacing * i + marginLeft + i * charWidth}, ${marginTop})`,
+        )
+        .attr('width', charWidth * textLength + letterSpacing * (textLength - 1))
+        .attr('height', charHeight + 6)
+        .on('click', onClick)
+        .on('mouseover', onMouseOver)
+        .on('mouseout', onMouseOut);
+
+    container
         .append('g')
-        .on('mouseover', () => handleMouseOver(lines))
+        .on('mouseover', onMouseOver)
+        .on('mouseout', onMouseOut)
+        .on('click', onClick)
         .selectAll('g')
         .data(data)
         .enter()
@@ -42,26 +112,19 @@ export function generateScatteredLinesText(
         .enter()
         .append('line')
         .style('stroke-width', strokeWidth)
-        .style('stroke', 'white');
-
-    setLinesAttrs(lines);
-}
-
-function setLinesAttrs(lines) {
-    lines
+        .style('stroke', 'white')
+        .attr('x1', ([[x1]]) => x1)
+        .attr('y1', ([[_x1, y1]]) => y1)
+        .attr('x2', ([_start, [x2]]) => x2)
+        .attr('y2', ([_start, [_x2, y2]]) => y2)
+        .data(d => d.map(({ target }) => target))
+        .transition()
+        .delay(delay)
+        .duration(duration)
         .attr('x1', ([[x1]]) => x1)
         .attr('y1', ([[_x1, y1]]) => y1)
         .attr('x2', ([_start, [x2]]) => x2)
         .attr('y2', ([_start, [_x2, y2]]) => y2);
-}
-
-function handleMouseOver(lines) {
-    setLinesAttrs(
-        lines
-            .data(d => d.map(({ target }) => target))
-            .transition()
-            .duration(1500),
-    );
 }
 
 function getLineLength([[pointAx, pointAy], [pointBx, pointBy]]) {
