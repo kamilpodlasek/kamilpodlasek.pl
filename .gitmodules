@@ -1,0 +1,3 @@
+[submodule "portfolio-projects"]
+	path = portfolio-projects
+	url = git@github.com:kamilpodlasek/portfolio-projects.git

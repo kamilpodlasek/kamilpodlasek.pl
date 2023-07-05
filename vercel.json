@@ -1,0 +1,4 @@
+{
+    "outputDirectory": "dist",
+    "routes": [{ "src": "/projects/(.*)", "dest": "/portfolio-projects/$1" }]
+}
